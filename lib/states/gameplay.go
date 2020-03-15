@@ -20,7 +20,11 @@ import (
 )
 
 // GameplayState is the main game state
-type GameplayState struct{}
+type GameplayState struct {
+	Score int
+	Lifes int
+	Level int
+}
 
 // OnStart method
 func (st *GameplayState) OnStart(world w.World) {
@@ -30,7 +34,20 @@ func (st *GameplayState) OnStart(world w.World) {
 	loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)
 	loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)
 
-	world.Resources.Game = resources.NewGame()
+	if st.Level == 0 {
+		world.Resources.Game = resources.NewGame()
+	} else {
+		world.Resources.Game = resources.NextGame(st.Score, st.Lifes)
+		world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+			text := world.Components.Engine.Text.Get(entity).(*ec.Text)
+			if text.ID == "score" {
+				text.Text = fmt.Sprintf("SCORE: %d", st.Score)
+			}
+			if text.ID == "life" {
+				text.Text = fmt.Sprintf("LIVES: %d", st.Lifes)
+			}
+		}))
+	}
 	initializeCollisionWorld(world)
 
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)

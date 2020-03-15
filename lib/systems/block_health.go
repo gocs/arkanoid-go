@@ -29,6 +29,6 @@ func BlockHealthSystem(world w.World) {
 	gameResources.Events.BlockCollisionEvents = nil
 
 	if world.Manager.Join(gameComponents.Block).Empty() {
-		gameResources.StateEvent = resources.StateEventLevelComplete
+		gameResources.StateEvent = resources.StateEventNextLevel
 	}
 }

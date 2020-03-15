@@ -53,6 +53,7 @@ type StateEvent int
 const (
 	StateEventNone StateEvent = iota
 	StateEventGameOver
+	StateEventNextLevel
 	StateEventLevelComplete
 )
 
@@ -68,4 +69,9 @@ type Game struct {
 // NewGame creates a new game
 func NewGame() *Game {
 	return &Game{Lives: 5}
+}
+
+// NextGame creates a new game
+func NextGame(score, lives int) *Game {
+	return &Game{Score: score, Lives: lives}
 }
