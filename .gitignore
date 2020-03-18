@@ -1,1 +1,10 @@
 .vscode
+
+# ignore build files
+*.exe
+
+# ignore bbolt db file
+*.db
+
+# ignore delve bin
+__debug_bin
