@@ -1,7 +1,6 @@
-package persist
+package components
 
 import (
-	"log"
 	"strings"
 
 	"github.com/x-hgg-x/arkanoid-go/lib/binconv"
@@ -14,8 +13,8 @@ type Persist struct {
 	db     *bolt.DB
 }
 
-// New gives new instance of persistence
-func New(dbName, bucket string) (*Persist, error) {
+// NewPersist gives new instance of persistence
+func NewPersist(dbName, bucket string) (*Persist, error) {
 	// Open the my.db data file in your current directory.
 	// It will be created if it doesn't exist.
 	db, err := bolt.Open(dbName, 0600, nil)
@@ -64,7 +63,6 @@ func (p *Persist) UpdateList(key []byte, value [][]byte) error {
 
 		for i, v := range value {
 			key = append(key, binconv.Itob(i)...)
-			log.Println("key:", string(key))
 			err := b.Put(key, v)
 			if err != nil {
 				return err // must return slice even if almost finish

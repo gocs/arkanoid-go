@@ -2,7 +2,10 @@ package states
 
 import (
 	"fmt"
+	"strconv"
 
+	"github.com/x-hgg-x/arkanoid-go/lib/binconv"
+	"github.com/x-hgg-x/arkanoid-go/lib/components"
 	"github.com/x-hgg-x/arkanoid-go/lib/loader"
 
 	ecs "github.com/x-hgg-x/goecs"
@@ -69,6 +72,38 @@ func (st *LevelCompleteState) OnStart(world w.World) {
 			text.Text = fmt.Sprintf("SCORE: %d", st.Score)
 		}
 	}))
+
+	addToDB(st.Score)
+}
+
+func addToDB(score int) {
+	p, err := components.NewPersist("arkanoid.db", "Score")
+	if err != nil {
+		fmt.Println("error from creating", err)
+		return
+	}
+	defer p.Close()
+
+	key := []byte("scores")
+
+	d, err := p.ViewList(key)
+	if err != nil {
+		fmt.Println("error from getting list", err)
+		return
+	}
+	arrKey := append(key, binconv.Itob(len(d))...)
+	if p.Update(arrKey, []byte(strconv.Itoa(score))) != nil {
+		fmt.Println("error from updating list", err)
+		return
+	}
+	d, err = p.ViewList(key)
+	if err != nil {
+		fmt.Println("error from getting list", err)
+		return
+	}
+	for i, v := range d {
+		fmt.Printf("data[%d]: %s\n", i, string(v))
+	}
 }
 
 // OnStop method
