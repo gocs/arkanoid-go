@@ -1,6 +1,7 @@
 package components
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/x-hgg-x/arkanoid-go/lib/binconv"
@@ -14,6 +15,7 @@ type Persist struct {
 }
 
 // NewPersist gives new instance of persistence
+//	Future bucket name for lists will be integers
 func NewPersist(dbName, bucket string) (*Persist, error) {
 	// Open the my.db data file in your current directory.
 	// It will be created if it doesn't exist.
@@ -41,8 +43,7 @@ func (p *Persist) Close() {
 func (p *Persist) Update(key, value []byte) error {
 	return p.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(p.bucket)
-		err := b.Put(key, value)
-		return err
+		return b.Put(key, value)
 	})
 }
 
@@ -85,4 +86,20 @@ func (p *Persist) ViewList(key []byte) (value [][]byte, err error) {
 		return nil
 	})
 	return
+}
+
+// Append adds another item to the list by a key
+func (p *Persist) Append(key, value []byte) error {
+	return p.db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(p.bucket)
+		var count int
+		b.ForEach(func(k, v []byte) error {
+			if strings.HasPrefix(string(k), string(key)) {
+				count++
+			}
+			return nil
+		})
+		
+		return b.Put([]byte(fmt.Sprintf("%s%d", string(key), count)), value)
+	})
 }

@@ -100,3 +100,27 @@ func Test_PersistActual(t *testing.T) {
 		t.Logf("data[%d]: %s", i, string(v))
 	}
 }
+
+func Test_PersistActualAppend(t *testing.T) {
+
+	p, err := NewPersist("arkanoid.db", "Score")
+	if err != nil {
+		t.Error("error from creating", err)
+	}
+	defer p.Close()
+
+	err = p.Append([]byte("epic"), []byte("epic"))
+	if err != nil {
+		t.Error("error from getting list", err)
+		return
+	}
+	d, err := p.ViewList([]byte("epic"))
+	if err != nil {
+		t.Error("error from getting list", err)
+		return
+	}
+	t.Log("len d: ", len(d))
+	for i, v := range d {
+		t.Logf("data[%d]: %s", i, string(v))
+	}
+}

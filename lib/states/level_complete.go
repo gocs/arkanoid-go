@@ -106,6 +106,21 @@ func addToDB(score int) {
 	}
 }
 
+
+// func addToDB(score int) {
+// 	p, err := components.NewPersist("arkanoid.db", "Score")
+// 	if err != nil {
+// 		fmt.Println("error from creating", err)
+// 		return
+// 	}
+// 	defer p.Close()
+
+// 	if p.Update([]byte("scores"), binconv.Itob(score)) != nil {
+// 		fmt.Println("error from updating list", err)
+// 		return
+// 	}
+// }
+
 // OnStop method
 func (st *LevelCompleteState) OnStop(world w.World) {
 	world.Manager.DeleteEntities(st.levelCompleteMenu...)

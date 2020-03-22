@@ -25,13 +25,25 @@
 [[entity]]
 
     [entity.components.Text]
+    id = "cursor_highscores"
+    text = "\u25ba"
+    font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
+    color = [255, 255, 255, 0]
+
+    [entity.components.UITransform]
+    translation = { x = 150, y = 200 }
+
+
+[[entity]]
+
+    [entity.components.Text]
     id = "cursor_exit"
     text = "\u25ba"
     font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 0]
 
     [entity.components.UITransform]
-    translation = { x = 250, y = 200 }
+    translation = { x = 250, y = 100 }
 
 
 [[entity]]
@@ -61,8 +73,8 @@
 [[entity]]
 
     [entity.components.Text]
-    id = "exit"
-    text = "EXIT"
+    id = "highscores"
+    text = "HIGHSCORES"
     font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 255]
 
@@ -77,6 +89,30 @@
 
     [entity.components.Transform]
     translation = { x = 360.0, y = 200.0 }
+
+    [entity.components.MouseReactive]
+    id = "highscores"
+
+
+[[entity]]
+
+    [entity.components.Text]
+    id = "exit"
+    text = "EXIT"
+    font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
+    color = [255, 255, 255, 255]
+
+    [entity.components.UITransform]
+    translation = { x = 360, y = 100 }
+
+
+[[entity]]
+
+    [entity.components.SpriteRender]
+    fill = { width = 150, height = 40 }
+
+    [entity.components.Transform]
+    translation = { x = 360.0, y = 100.0 }
 
     [entity.components.MouseReactive]
     id = "exit"
